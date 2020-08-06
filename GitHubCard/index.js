@@ -1,3 +1,4 @@
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
@@ -28,8 +29,6 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
-
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -50,11 +49,79 @@ const followersArray = [];
     </div>
 */
 
-/*
-  List of LS Instructors Github username's:
-    tetondan
-    dustinmyers
-    justsml
-    luishrd
-    bigknell
-*/
+
+const cardsAttach = document.querySelector('.cards');
+
+  function userCards(obj){
+
+    const card = document.createElement('div');
+    const userImg = document.createElement('img');
+    const cardInfo = document.createElement('div');
+    const name = document.createElement('h3');
+    const userName = document.createElement('p');
+    const location = document.createElement('p');
+    const profile = document.createElement('p');
+    const profileAddress = document.createElement('a');
+    const followers = document.createElement('p');
+    const following = document.createElement('p');
+    const bio = document.createElement('p');
+
+    card.className = ('card');
+    cardInfo.className = ('card-info');
+    name.className = ('name');
+    userName.className = ('username');
+
+    userImg.setAttribute('src', obj.avatar_url);
+    name.textContent = obj.name;
+    userName.textContent = obj.login;
+    location.textContent = obj.location;
+    profile.textContent = 'Profile: '
+    profileAddress.textContent = obj.html_url;
+    profileAddress.setAttribute('href', obj.html_url);
+    followers.textContent = `Followers: ${obj.followers}`;
+    following.textContent = `Following: ${obj.following}`;
+    bio.textContent = `Bio: ${obj.bio}`;
+
+
+    card.appendChild(userImg);
+    card.appendChild(cardInfo);
+    cardInfo.appendChild(name);
+    cardInfo.appendChild(userName);
+    cardInfo.appendChild(location);
+    cardInfo.appendChild(profile);
+    profile.appendChild(profileAddress);
+    cardInfo.appendChild(followers);
+    cardInfo.appendChild(following);
+    cardInfo.appendChild(bio);
+
+    return card;
+
+  }
+
+
+  axios.get('https://api.github.com/users/Winnie1996')
+  .then(function(response) {
+    const gitData = response.data;
+    cardsAttach.appendChild(userCards(gitData));
+
+  })
+
+  .catch(function(error) {
+    console.log(error);
+  })
+
+
+const instructors = ['Ladrillo', 'tetondan', 'zakmayfield', 'zoelud', 'BrityHemming'];
+
+instructors.forEach(function(instructors) {
+  axios.get(`https://api.github.com/users/${instructors}`)
+    .then(function(response){
+      const gitData = response.data;
+      cardsAttach.appendChild(userCards(gitData));
+    })
+
+    .catch(function(error) {
+      console.log(error)
+    })
+})
+
